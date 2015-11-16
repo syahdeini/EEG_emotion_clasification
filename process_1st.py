@@ -31,23 +31,23 @@ def order(trial):
     trial[6],trial[7]=trial[7],trial[6]
     trial[8],trial[9]=trial[9],trial[8]
     trial[10],trial[11]=trial[11],trial[10]
-    trial[12],trial[15]=trial[15],trial[12] 
+    trial[12],trial[15]=trial[15],trial[12]
     trial[13],trial[15]=trial[15],trial[15]
-    trial[14],trial[15]=trial[15],trial[14] 
-    trial[16],trial[31]=trial[31],trial[16] 
-    trial[17],trial[30]=trial[30],trial[17] 
-    trial[18],trial[28]=trial[28],trial[18] 
+    trial[14],trial[15]=trial[15],trial[14]
+    trial[16],trial[31]=trial[31],trial[16]
+    trial[17],trial[30]=trial[30],trial[17]
+    trial[18],trial[28]=trial[28],trial[18]
     trial[19],trial[29]=trial[29],trial[19]
-    trial[20],trial[26]=trial[26],trial[20] 
-    trial[21],trial[27]=trial[27],trial[21] 
-    trial[22],trial[24]=trial[24],trial[22] 
-    trial[23],trial[25]=trial[25],trial[23] 
-    trial[24],trial[27]=trial[27],trial[24] 
-    trial[25],trial[27]=trial[24],trial[27] 
-    trial[26], trial[29]= trial[29],trial[26] 
-    trial[27],trial[29]=trial[29],trial[27] 
+    trial[20],trial[26]=trial[26],trial[20]
+    trial[21],trial[27]=trial[27],trial[21]
+    trial[22],trial[24]=trial[24],trial[22]
+    trial[23],trial[25]=trial[25],trial[23]
+    trial[24],trial[27]=trial[27],trial[24]
+    trial[25],trial[27]=trial[24],trial[27]
+    trial[26], trial[29]= trial[29],trial[26]
+    trial[27],trial[29]=trial[29],trial[27]
     trial[28],trial[30]=trial[30],trial[28]
-    trial[29],trial[31]=trial[31],trial[29] 
+    trial[29],trial[31]=trial[31],trial[29]
     return trial
 
 # 1. Reading bdf data
@@ -72,19 +72,20 @@ for i in range(1,23):
     events = mne.find_events(raw, stim_channel='STI 014')
     # extract epoch from events
     # event no.3 used (fixation screen before trial begin), information can be read at DEAP web
-    event_id = 3   
+    event_id = 3
     tmin = 0
-    tmax = 65  
+    tmax = 65
     baseline = (0, 5) # 5 seecond baseline, before the trial begin
     print ">> finding epochs"
-# 3. Getting EPOCHS from data, using status code (event id) no.3 
+# 3. Getting EPOCHS from data, using status code (event id) no.3
+#    and downsampling the data into 128 hertz (decim=4)
     epochs = mne.Epochs(raw,events, event_id, tmin, tmax, picks=var_picks,baseline= baseline,
                         add_eeg_ref= True,decim=4,preload=True)
 
 # 4. ICA
     ica=ICA(n_components=32)
     ica=ica.fit(epochs,picks=var_picks)
-    # getting data as list    
+    # getting data as list
     datas=ica.get_sources(epochs)
     datas=datas.get_data()
 # 5. saving data as pickle
